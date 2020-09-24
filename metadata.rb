@@ -8,7 +8,7 @@ version           '0.1.0'
 source_url        'https://github.com/chef-cookbooks/chef_zpool'
 issues_url        'https://github.com/chef-cookbooks/chef_zpool/issues'
 
-%w(solaris2 ubuntu freebsd).each do |os|
+%w(centos redhat solaris2 ubuntu freebsd).each do |os|
   supports os
 end
 
