@@ -8,9 +8,10 @@ A resource for creating and destroying zpools. This cookbook is forked from the 
 
 ### Platforms
 
-- Ubuntu
+- CentOS/Red Hat (if ZFS is installed first)
 - FreeBSD
 - Solaris
+- Ubuntu
 
 ### Chef
 
@@ -32,6 +33,7 @@ A resource for creating and destroying zpools. This cookbook is forked from the 
 #### Properties
 
 - `ashift` - Set sector size, support by the OS is not verified.
+- `autotrim` - Enable or disable autotrim. Support by the OS is not verified.
 - `disks` - Array of disks to put in the pool.
 - `force` - Force the use of vdevs, even if they appear to be in use.
 - `mountpoint` - Mountpoint for the top-level file system, absolute path or 'none'.

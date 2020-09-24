@@ -19,6 +19,7 @@
 resource_name :zpool
 
 property :ashift, Integer, default: 0
+property :autotrim, [true, false], default: false
 property :disks, Array, default: []
 property :force, [true, false], default: false
 property :mountpoint, String
@@ -59,6 +60,13 @@ action_class do
     args << '-r' if new_resource.recursive
 
     # Properties
+    args << '-o'
+    args << if new_resource.autotrim
+              'autotrim=on'
+            else
+              'autotrim=off'
+            end
+
     if new_resource.ashift > 0
       args << '-o'
       args << format('ashift=%s', new_resource.ashift)
