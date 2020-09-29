@@ -20,6 +20,7 @@ provides :zpool
 resource_name :zpool
 
 property :ashift, Integer, default: 0
+property :autoexpand, [true, false], default: false
 property :autotrim, [true, false], default: false
 property :disks, Array, default: []
 property :force, [true, false], default: false
@@ -61,6 +62,13 @@ action_class do
     args << '-r' if new_resource.recursive
 
     # Properties
+    args << '-o'
+    args << if new_resource.autoexpand
+              'autoexpand=on'
+            else
+              'autoexpand=off'
+            end
+
     args << '-o'
     args << if new_resource.autotrim
               'autotrim=on'
