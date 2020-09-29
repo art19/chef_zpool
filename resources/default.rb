@@ -26,15 +26,15 @@ property :disks, Array, default: []
 property :force, [true, false], default: false
 property :mountpoint, String
 property :recursive, [true, false], default: false
-property :raid, [String, NilClass], equal_to: %w(mirror raidz raidz2 raidz3)
+property :raid, [String, NilClass], equal_to: %w[mirror raidz raidz2 raidz3]
 
 action :create do
   if created?
     if online?
       new_resource.disks.each do |disk|
         short_disk = disk.split('/').last
-        next if vdevs.include?(short_disk)
-        next if vdevs.include?(disk)
+        next if vdevs.include?(short_disk) || vdevs.include?(disk)
+
         Chef::Log.info("Adding #{disk} to pool #{new_resource.name}")
         shell_out!("zpool add #{args_from_resource} #{new_resource.name} #{disk}")
       end
@@ -85,7 +85,7 @@ action_class do
   end
 
   def created?
-    info.exitstatus == 0
+    info.exitstatus.zero?
   end
 
   def state
@@ -99,6 +99,7 @@ action_class do
   def vdevs
     @vdevs ||= shell_out!("zpool status #{new_resource.name}").stdout.lines.map do |line|
       next unless line.chomp =~ /^[\t]  /
+      
       line.chomp.split("\s")[0]
     end
   end
